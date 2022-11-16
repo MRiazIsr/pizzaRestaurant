@@ -10,20 +10,19 @@ exports.getMenu = async (req, res) => {
     let result;
 
     if (offsetLimitObject.limit == undefined) {
-        result = createReturnObject(false, 'getTask', errorConstants.limitIsRequired, errorConstants.statusBadRequest);
+        result = createReturnObject(false, 'getMenu', errorConstants.limitIsRequired, errorConstants.statusBadRequest);
         res.status(result.status_code).send(result);
 
         return;
     } 
 
     try{
-        result = await menuModel.getMenu(offsetLimitObject, 'getAll');  
+        result = await menuModel.getMenu(offsetLimitObject, 'getMenu');  
     } catch(e) {
-        result = createReturnObject(false, 'getresult', e.toString(), errorConstants.statusServerError);
+        result = createReturnObject(false, 'getMenu', e.toString(), errorConstants.statusServerError);
     }
 
     res.status(result.status_code).send(result);
-
 }    
    
 
