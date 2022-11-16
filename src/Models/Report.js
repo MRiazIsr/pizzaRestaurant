@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const connectDB = require('../DB/DbConnection');
 const errorConstants = require('../errorConstants');
-
 const ReportSchema = mongoose.Schema({
 
     orders : { 
@@ -27,7 +26,7 @@ exports.getReportById = async (id, method) => {
             return openedConnection;
         }
         
-        const res = await position.find({ '_id': id })
+        const res = await report.find({ '_id': id })
         responseObject = createReturnObject(true, method, res, errorConstants.statusOk);
         await connectDB.closeConnection();
         
@@ -50,7 +49,7 @@ exports.createReport = async (body, method) => {
             return openedConnection;
         }
 
-        const res = await position.create(body);
+        const res = await report.create(body);
 
         if (res === null) {
             responseObject = createReturnObject(false, method, cantFind, errorConstants.statusBadRequest);

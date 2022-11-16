@@ -4,14 +4,10 @@ const errorConstants = require('../errorConstants');
 const KitchenHelper = require('../Helpers/KitchenHelper');
 
 exports.ordersPreparing = async (req,res) => {
-    const ids = req.query.ids
+    const ids = req.body
     let pizzas;
-    let dateStartOrder;
-    let dateEndOrder;
     let dateStartProcess;
     let dateEndProcess;
-    let orderDiff;
-    let processDiff;
     let reportOrder = [];
     let report;
 
@@ -19,7 +15,6 @@ exports.ordersPreparing = async (req,res) => {
     try{
 
         pizzas = await menuModel.getPositionsByIds(ids, 'getPositionsByIds');
-
     } catch(e) {
 
         result = createReturnObject(false, 'getPositionsByIds', e.toString(), errorConstants.statusServerError);
@@ -27,26 +22,33 @@ exports.ordersPreparing = async (req,res) => {
 
         return;
     }
+    
+    let promises = [];
+    for (let pizza of pizzas.result){
 
-    dateStartProcess = new Date().toString();
-    for (let pizza of pizzas){
-
-        dateStartOrder = new Date().toString();
-        KitchenHelper.doughMake(pizza);
-        dateEndOrder = new Date().toString();
-
-        orderDiff = dateStartOrder - dateEndOrder;
-        reportOrder.push({
-            pizzaName : pizza.name,
-            timeSpent : orderDiff
-        });
+        promises.push( new Promise (resolve => {
+            pizza.resolve = resolve;
+            KitchenHelper.doughMake(pizza);
+        }));
     }
-    dateEndProcess = new Date().toString();
-    processDiff = dateStartProcess - dateEndProcess;
+
+    Promise.all(promises)
+        .then( (pizzas) => {
+            pizzas.forEach((element) => {
+                reportOrder.push({
+                    pizzaName : element.name,
+                    timeSpent : element.endTime - element.startTime
+                });
+            })
+        });
+        
+    dateStartProcess = Date.now();  
+    await Promise.all(promises);
+    dateEndProcess = Date.now();
 
     report = {
         orders : JSON.stringify(reportOrder),
-        processTime : processDiff
+        processTime : dateEndProcess/1000 - dateStartProcess/1000
     }
 
     try{

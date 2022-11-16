@@ -7,14 +7,14 @@ exports.getReportById = async (req, res) => {
     let result;
 
     if (id == undefined) {
-        result = createReturnObject(false, 'getReportById', errorConstants.limitIsRequired, errorConstants.statusBadRequest);
+        result = createReturnObject(false, 'getReportById', errorConstants.idIsRequired, errorConstants.statusBadRequest);
         res.status(result.status_code).send(result);
 
         return;
     } 
 
     try{
-        result = await reportModel.getReportById(offsetLimitObject, 'getReportById');  
+        result = await reportModel.getReportById(id, 'getReportById');  
     } catch(e) {
         result = createReturnObject(false, 'getReportById', e.toString(), errorConstants.statusServerError);
     }

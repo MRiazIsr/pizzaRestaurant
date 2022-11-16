@@ -2,22 +2,11 @@ const menuModel = require('../Models/Menu');
 const errorConstants = require('../errorConstants');
 
 exports.getMenu = async (req, res) => {
-    const offsetLimitObject = { 
-        offset : req.query.offset ?? 0,
-        limit : req.query.limit
-    };
 
     let result;
 
-    if (offsetLimitObject.limit == undefined) {
-        result = createReturnObject(false, 'getMenu', errorConstants.limitIsRequired, errorConstants.statusBadRequest);
-        res.status(result.status_code).send(result);
-
-        return;
-    } 
-
     try{
-        result = await menuModel.getMenu(offsetLimitObject, 'getMenu');  
+        result = await menuModel.getMenu('getMenu');  
     } catch(e) {
         result = createReturnObject(false, 'getMenu', e.toString(), errorConstants.statusServerError);
     }
