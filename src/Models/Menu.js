@@ -9,7 +9,7 @@ const PositionSchema = mongoose.Schema({
         required : true
     },
     toppings : { 
-        type : String,
+        type : Array,
         required : true
     },   
 
@@ -17,7 +17,7 @@ const PositionSchema = mongoose.Schema({
 
 const position = mongoose.model('Positions', PositionSchema);
 
-exports.getMenu = async (offsetLimitObject, method) => {
+exports.getMenu = async (method) => {
     let responseObject;
 
     try {
@@ -27,7 +27,7 @@ exports.getMenu = async (offsetLimitObject, method) => {
             return openedConnection;
         }
         
-        const res = await position.find().skip(offsetLimitObject.offset).limit(offsetLimitObject.limit);
+        const res = await position.find();
         responseObject = createReturnObject(true, method, res, errorConstants.statusOk);
         await connectDB.closeConnection();
         
@@ -77,7 +77,7 @@ exports.createPositions = async (body, method) => {
         const res = await position.insertMany(body);
 
         if (res === null) {
-            responseObject = createReturnObject(false, method, cantFind, errorConstants.statusBadRequest);
+            responseObject = createReturnObject(false, method, errorConstants.cantFind, errorConstants.statusBadRequest);
             await connectDB.closeConnection();
 
             return responseObject;

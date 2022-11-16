@@ -18,6 +18,7 @@ let waiterQueue = [];
 
 exports.doughMake = (pizza) => {
 
+    pizza.startTime = Date.now()/1000;
     if (availableDoughChefs > 0){
 
         availableDoughChefs--;
@@ -38,12 +39,24 @@ exports.doughMake = (pizza) => {
     }
 }
 
+toppingMake = (pizza) => {
+
+    for (let i=0; i < pizza.toppings.length; i++){
+
+        toppingStep(pizza, i);
+    }
+}
+
 toppingStep = (pizza, toppingIndex) => {
+
     if (availableToppingChefs > 0){
+
         availableToppingChefs--;
         setTimeout(() => {
             availableToppingChefs++;
+
             if (toppingQueue.length != 0){
+                
                 let topping = toppingQueue.shift();
                 toppingStep(topping.pizza, topping.toppingIndex);
             }
@@ -54,14 +67,6 @@ toppingStep = (pizza, toppingIndex) => {
     } else {
 
         toppingQueue.push({pizza, toppingIndex});
-    }
-}
-
-toppingMake = (pizza) => {
-
-    for (let i=0; i < pizza.toppings.length; i++){
-
-        toppingStep(pizza, i);
     }
 }
 
@@ -94,6 +99,8 @@ waiterDeliver = (pizza) => {
         setTimeout(() => {
 
             availableWaiters++;
+            pizza.endTime = Date.now()/1000;
+            pizza.resolve(pizza);
 
             if (waiterQueue.length != 0){
 

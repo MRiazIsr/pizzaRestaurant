@@ -2,9 +2,9 @@
   "name": "todolist",
   "version": "1.0.0",
   "description": "ToDo CRUD API",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
-    "start": "nodemon app.js"
+    "start": "nodemon server.js"
   },
   "repository": {
     "type": "git",
