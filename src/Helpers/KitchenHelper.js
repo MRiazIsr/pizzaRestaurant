@@ -30,7 +30,7 @@ exports.doughMake = (pizza) => {
 
             if (doughQueue.length != 0){
 
-                doughMake(doughQueue.shift());
+                this.doughMake(doughQueue.shift());
             }
         }, DOUGH_TIME);
     } else {

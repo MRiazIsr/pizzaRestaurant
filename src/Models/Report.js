@@ -4,7 +4,7 @@ const errorConstants = require('../errorConstants');
 const ReportSchema = mongoose.Schema({
 
     orders : { 
-        type : String,
+        type : Array,
         required : true
     },
     processTime : { 
