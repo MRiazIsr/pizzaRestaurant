@@ -47,7 +47,7 @@ exports.ordersPreparing = async (req,res) => {
     dateEndProcess = Date.now();
 
     report = {
-        orders : JSON.stringify(reportOrder),
+        orders : reportOrder,
         processTime : dateEndProcess/1000 - dateStartProcess/1000
     }
 

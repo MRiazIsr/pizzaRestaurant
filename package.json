@@ -1,10 +1,10 @@
 {
-  "name": "todolist",
+  "name": "Pizza Restaurant",
   "version": "1.0.0",
-  "description": "ToDo CRUD API",
+  "description": "Pizza Restaurant APP",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
