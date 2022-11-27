@@ -1,4 +1,4 @@
-# CRUD API for To Do Tasks 
+# CRUD API for Pizza Restaurant 
 * If on github readmy params looking not readable you can open it After Application is started in postman: 'http://localhost:3000/' 
 
 ### Technology used in the aplication: ###
